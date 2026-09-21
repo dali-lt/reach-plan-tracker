@@ -19,7 +19,7 @@
       problemPlaceholder: "e.g. no real logo, inconsistent colors, phone-camera photos...",
       noteLabel: "Note (optional)",
       notePlaceholder: "Anything worth remembering about today",
-      editWindowNote: "This day is view-only now — editing is only open for today and yesterday.",
+      editWindowNote: "This day is view-only now — editing stays open for the last 3 days only.",
       dayAdvanceNote: "The day number moves forward with the real calendar, one day at a time — finishing early doesn't skip ahead to tomorrow.",
       yourprospect: "Yesterday's prospect",
       reconnectwho: "Share this person's post today",
@@ -66,7 +66,7 @@
       problemPlaceholder: 'مثال: بلا لوقو حقيقي، ألوان مش متناسقة، صور موبايل...',
       noteLabel: 'ملاحظة (اختياري)',
       notePlaceholder: 'أي حاجة تحب تتفكرها على اليوم',
-      editWindowNote: 'هاذا اليوم توا للمشاهدة بس — التعديل متاح لليوم والبارح بس.',
+      editWindowNote: 'هاذا اليوم توا للمشاهدة بس — التعديل يبقى متاح لآخر 3 أيام بس.',
       dayAdvanceNote: 'رقم اليوم يتقدم مع التاريخ الحقيقي، يوم بيوم — كي تكمل بدري ما يقفزش لغدوة.',
       yourprospect: 'البراند اللي لقيتو أمس',
       reconnectwho: 'شارك بوست هاذا الشخص اليوم',
@@ -263,7 +263,7 @@
       const entry = state.days[i];
       const done = entry && entry.done;
       const futureLocked = i > n;
-      const editWindowLocked = i <= (n - 2);
+      const editWindowLocked = i <= (n - 3);
       const locked = futureLocked || editWindowLocked;
       const missed = !futureLocked && i < n && !done;
       const isExpanded = expandedDays.has(i);
