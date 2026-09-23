@@ -1,120 +1,184 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en" dir="ltr" id="htmlRoot">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>30-Day Reach Plan</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="CSS/style.css">
-</head>
-<body>
-
-<div class="lang-toggle">
-  <button id="btnEn" class="active">EN</button>
-  <button id="btnAr">AR</button>
-</div>
-
-<header>
-  <p class="eyebrow"><span class="plus-mark">+</span>MOHAMED ALI LOUATI</p>
-  <h1 class="display" id="txt-h1">30 Days.<br><span class="hl">One system.</span></h1>
-  <p class="sub" id="txt-sub">Goal: 1-2 clients, and fixing who actually sees you.</p>
-</header>
-
-<div class="pos-card">
-  <span class="pos-label" id="txt-poslabel">Your edge</span>
-  <span id="txt-postext">Precision from geomatics. Honesty I won't compromise on. Every brand gets a precisely built, honestly built system — backed by real results since 2023.</span>
-</div>
-
-<div id="startScreen" class="start-card" style="display:none;">
-  <div class="start-date" id="startDateDisplay"></div>
-  <div class="today-title display" id="txt-startTitle">Ready to start?</div>
-  <p id="txt-startDesc">Day 1 begins today. The plan runs 30 days, in a repeating 6-day cycle.</p>
-  <button class="btn-start" id="btnStart">Start Day 1</button>
-</div>
-
-<div id="mainApp" style="display:none;">
-
-  <div class="stats-row">
-    <div class="stat-box"><div class="num" id="statDay">1/30</div><div class="lbl" id="txt-statday">Day</div></div>
-    <div class="stat-box"><div class="num" id="statStreak">0</div><div class="lbl" id="txt-statstreak">Streak</div></div>
-    <div class="stat-box"><div class="num" id="statSignals">0</div><div class="lbl" id="txt-statsignals">Signals</div></div>
-    <div class="stat-box"><div class="num" id="statClients">0/2</div><div class="lbl" id="txt-statclients">Clients</div></div>
-  </div>
-
-  <div id="catchupBanner" class="catchup" style="display:none;">
-    <strong id="txt-catchupTitle">Catch-up pending</strong>
-    <span id="catchupText"></span>
-  </div>
-
-  <div class="section-title" id="txt-today">Today</div>
-
-  <div class="today-card">
-    <div class="today-daynum" id="todayDayLabel">Day 1 — Scout + Engage</div>
-    <div class="day-advance-note" id="txt-dayadvance"></div>
-    <div class="today-title" id="todayTaskTitle"></div>
-    <div class="today-desc" id="todayTaskDesc"></div>
-
-    <div id="scoutField" class="field-group" style="display:none;">
-      <label id="txt-prospectlabel">Prospect handle (save it — you'll need it tomorrow)</label>
-      <input type="text" id="prospectInput" placeholder="@handle">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>30-Day Reach Plan</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="CSS/style.css" />
+  </head>
+  <body>
+    <div class="lang-toggle">
+      <button id="btnEn" class="active">EN</button>
+      <button id="btnAr">AR</button>
     </div>
 
-    <div id="outreachField" style="display:none;">
-      <div class="field-group">
-        <label id="txt-yourprospect">Yesterday's prospect</label>
-        <input type="text" id="prospectDisplay" readonly>
+    <header>
+      <p class="eyebrow"><span class="plus-mark">+</span>MOHAMED ALI LOUATI</p>
+      <h1 class="display" id="txt-h1">
+        30 Days.<br /><span class="hl">One system.</span>
+      </h1>
+      <p class="sub" id="txt-sub">
+        Goal: 1-2 clients, and fixing who actually sees you.
+      </p>
+    </header>
+
+    <div class="pos-card">
+      <span class="pos-label" id="txt-poslabel">Your edge</span>
+      <span id="txt-postext"
+        >Precision from geomatics. Honesty I won't compromise on. Every brand
+        gets a precisely built, honestly built system — backed by real results
+        since 2023.</span
+      >
+    </div>
+
+    <div id="startScreen" class="start-card" style="display: none">
+      <div class="start-date" id="startDateDisplay"></div>
+      <div class="today-title display" id="txt-startTitle">Ready to start?</div>
+      <p id="txt-startDesc">
+        Day 1 begins today. The plan runs 30 days, in a repeating 6-day cycle.
+      </p>
+      <button class="btn-start" id="btnStart">Start Day 1</button>
+      <div class="start-divider" id="txt-or">or</div>
+      <button class="btn-import" id="btnImportStart">
+        Import a saved plan
+      </button>
+      <input
+        type="file"
+        id="importFile"
+        accept="application/json,.json"
+        hidden
+      />
+      <div
+        class="import-status"
+        id="importStatus"
+        role="status"
+        aria-live="polite"
+      ></div>
+    </div>
+
+    <div id="mainApp" style="display: none">
+      <div class="data-actions">
+        <button class="btn-export" id="btnExport">Export plan</button>
       </div>
-      <div class="template-box">
-        <button class="copy-btn" id="btnCopyTemplate">COPY</button>
-        <span id="templateText"></span>
+
+      <div class="stats-row">
+        <div class="stat-box">
+          <div class="num" id="statDay">1/30</div>
+          <div class="lbl" id="txt-statday">Day</div>
+        </div>
+        <div class="stat-box">
+          <div class="num" id="statStreak">0</div>
+          <div class="lbl" id="txt-statstreak">Streak</div>
+        </div>
+        <div class="stat-box">
+          <div class="num" id="statSignals">0</div>
+          <div class="lbl" id="txt-statsignals">Signals</div>
+        </div>
+        <div class="stat-box">
+          <div class="num" id="statClients">0/2</div>
+          <div class="lbl" id="txt-statclients">Clients</div>
+        </div>
+      </div>
+
+      <div id="catchupBanner" class="catchup" style="display: none">
+        <strong id="txt-catchupTitle">Catch-up pending</strong>
+        <span id="catchupText"></span>
+      </div>
+
+      <div class="section-title" id="txt-today">Today</div>
+
+      <div class="today-card">
+        <div class="today-daynum" id="todayDayLabel">
+          Day 1 — Scout + Engage
+        </div>
+        <div class="day-advance-note" id="txt-dayadvance"></div>
+        <div class="today-title" id="todayTaskTitle"></div>
+        <div class="today-desc" id="todayTaskDesc"></div>
+
+        <div id="scoutField" class="field-group" style="display: none">
+          <label id="txt-prospectlabel"
+            >Prospect handle (save it — you'll need it tomorrow)</label
+          >
+          <input type="text" id="prospectInput" placeholder="@handle" />
+        </div>
+
+        <div id="outreachField" style="display: none">
+          <div class="field-group">
+            <label id="txt-yourprospect">Yesterday's prospect</label>
+            <input type="text" id="prospectDisplay" readonly />
+          </div>
+          <div class="template-box">
+            <button class="copy-btn" id="btnCopyTemplate">COPY</button>
+            <span id="templateText"></span>
+          </div>
+        </div>
+
+        <div id="reconnectField" class="field-group" style="display: none">
+          <label id="txt-reconnectwho">Share this person's post today</label>
+          <input type="text" id="reconnectDisplay" readonly />
+        </div>
+
+        <button class="btn-done" id="btnMarkDone">Mark today done</button>
+
+        <div class="signal-row" id="signalRow" style="display: none">
+          <button class="signal-btn" data-signal="none" id="sigNone">
+            No signal
+          </button>
+          <button class="signal-btn" data-signal="reply" id="sigReply">
+            Got a reply
+          </button>
+          <button class="signal-btn" data-signal="convo" id="sigConvo">
+            New conversation
+          </button>
+        </div>
+      </div>
+
+      <div class="section-title" id="txt-alldays">All 30 days</div>
+      <div class="day-list" id="dayList"></div>
+
+      <div class="section-title" id="txt-monthgoal">Month goal</div>
+      <div class="goal-card">
+        <div class="goal-top">
+          <h2 id="txt-newclients">New clients</h2>
+          <span class="count"><span id="clientCount">0</span> / 2</span>
+        </div>
+        <div class="goal-slots" id="goalSlots">
+          <div class="slot"></div>
+          <div class="slot"></div>
+        </div>
+        <div class="goal-buttons">
+          <button class="btn-ghost" id="btnMinus">-1</button>
+          <button class="btn-primary" id="btnPlus">+1</button>
+        </div>
+      </div>
+
+      <div id="completionPanel" class="completion-panel" style="display: none">
+        <div class="today-title display" id="txt-sprintdone"></div>
+        <button class="btn-start" id="btnRestart"></button>
+      </div>
+
+      <div
+        id="bigGapNotice"
+        style="display: none; text-align: center; margin-top: 22px"
+      >
+        <span
+          class="btn-reset"
+          id="btnRestartSubtle"
+          style="display: inline-block"
+        ></span>
       </div>
     </div>
 
-    <div id="reconnectField" class="field-group" style="display:none;">
-      <label id="txt-reconnectwho">Share this person's post today</label>
-      <input type="text" id="reconnectDisplay" readonly>
-    </div>
+    <footer id="txt-footer">
+      Raykom Fil Projet — precision, honesty, proof.
+    </footer>
 
-    <button class="btn-done" id="btnMarkDone">Mark today done</button>
-
-    <div class="signal-row" id="signalRow" style="display:none;">
-      <button class="signal-btn" data-signal="none" id="sigNone">No signal</button>
-      <button class="signal-btn" data-signal="reply" id="sigReply">Got a reply</button>
-      <button class="signal-btn" data-signal="convo" id="sigConvo">New conversation</button>
-    </div>
-  </div>
-
-  <div class="section-title" id="txt-alldays">All 30 days</div>
-  <div class="day-list" id="dayList"></div>
-
-  <div class="section-title" id="txt-monthgoal">Month goal</div>
-  <div class="goal-card">
-    <div class="goal-top">
-      <h2 id="txt-newclients">New clients</h2>
-      <span class="count"><span id="clientCount">0</span> / 2</span>
-    </div>
-    <div class="goal-slots" id="goalSlots"><div class="slot"></div><div class="slot"></div></div>
-    <div class="goal-buttons">
-      <button class="btn-ghost" id="btnMinus">-1</button>
-      <button class="btn-primary" id="btnPlus">+1</button>
-    </div>
-  </div>
-
-  <div id="completionPanel" class="completion-panel" style="display:none;">
-    <div class="today-title display" id="txt-sprintdone"></div>
-    <button class="btn-start" id="btnRestart"></button>
-  </div>
-
-  <div id="bigGapNotice" style="display:none; text-align:center; margin-top:22px;">
-    <span class="btn-reset" id="btnRestartSubtle" style="display:inline-block;"></span>
-  </div>
-</div>
-
-<footer id="txt-footer">Raykom Fil Projet — precision, honesty, proof.</footer>
-
-<script src="JS/script.js"></script>
-
-</body>
+    <script src="JS/script.js"></script>
+  </body>
 </html>
