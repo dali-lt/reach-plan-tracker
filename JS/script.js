@@ -16,6 +16,17 @@
       or: "or",
       importError: "That file is not a valid reach plan.",
       importSuccess: "Plan imported successfully.",
+      startSuccess: "Day 1 started.",
+      exportSuccess: "Plan exported successfully.",
+      doneSuccess: "Today's progress was saved.",
+      undoneSuccess: "Today's completion was removed.",
+      signalSuccess: "Signal saved.",
+      copySuccess: "Template copied.",
+      copyError: "Could not copy the template.",
+      clientAdded: "Client count increased.",
+      clientRemoved: "Client count decreased.",
+      resetSuccess: "Everything was reset. Fresh start!",
+      languageChanged: "Language changed to English.",
       statday: "Day",
       statstreak: "Streak",
       statsignals: "Signals",
@@ -100,6 +111,17 @@
       or: "ولا",
       importError: "الملف هذا موش خطة reach صحيحة.",
       importSuccess: "تم استيراد الخطة بنجاح.",
+      startSuccess: "بدا اليوم الأول.",
+      exportSuccess: "تم تصدير الخطة بنجاح.",
+      doneSuccess: "تم حفظ تقدم اليوم.",
+      undoneSuccess: "تم إلغاء إكمال اليوم.",
+      signalSuccess: "تم حفظ الإشارة.",
+      copySuccess: "تم نسخ القالب.",
+      copyError: "ما نجّمش ننسخ القالب.",
+      clientAdded: "زاد عدد العملاء.",
+      clientRemoved: "نقص عدد العملاء.",
+      resetSuccess: "تم تصفير كل شيء. بداية جديدة!",
+      languageChanged: "تبدلت اللغة للعربي.",
       statday: "اليوم",
       statstreak: "Streak",
       statsignals: "Signals",
@@ -176,6 +198,27 @@
   };
 
   let currentLang = "en";
+
+  function showAlert(message, type = "success") {
+    const container = document.getElementById("toastContainer");
+    const toast = document.createElement("div");
+    const icons = {
+      success: "✓",
+      info: "i",
+      warning: "!",
+      error: "×",
+    };
+    toast.className = "toast toast-" + type;
+    toast.innerHTML =
+      '<span class="toast-icon">' +
+      (icons[type] || icons.success) +
+      "</span>" +
+      "<span>" +
+      message +
+      "</span>";
+    container.appendChild(toast);
+    setTimeout(() => toast.remove(), 3200);
+  }
 
   function load() {
     try {
@@ -265,15 +308,18 @@
         save(state);
         document.getElementById("importStatus").textContent =
           dayMeta[currentLang].importSuccess;
+        showAlert(dayMeta[currentLang].importSuccess, "success");
         renderAll();
       } catch (e) {
         document.getElementById("importStatus").textContent =
           dayMeta[currentLang].importError;
+        showAlert(dayMeta[currentLang].importError, "error");
       }
     };
     reader.onerror = function () {
       document.getElementById("importStatus").textContent =
         dayMeta[currentLang].importError;
+      showAlert(dayMeta[currentLang].importError, "error");
     };
     reader.readAsText(file);
   }
@@ -295,6 +341,7 @@
       "reach-plan-" + new Date().toISOString().slice(0, 10) + ".json";
     link.click();
     setTimeout(() => URL.revokeObjectURL(url), 1000);
+    showAlert(dayMeta[currentLang].exportSuccess, "info");
   }
 
   let state = load();
@@ -702,6 +749,7 @@
   document.getElementById("btnStart").addEventListener("click", () => {
     state.startDate = new Date().toISOString();
     save(state);
+    showAlert(dayMeta[currentLang].startSuccess, "success");
     renderAll();
   });
 
@@ -727,6 +775,12 @@
     entry.done = !entry.done;
     if (!entry.done) entry.signal = null;
     save(state);
+    showAlert(
+      entry.done
+        ? dayMeta[currentLang].doneSuccess
+        : dayMeta[currentLang].undoneSuccess,
+      entry.done ? "success" : "warning",
+    );
     renderAll();
   });
 
@@ -738,6 +792,7 @@
         const entry = getDayEntry(n);
         entry.signal = s;
         save(state);
+        showAlert(dayMeta[currentLang].signalSuccess, "info");
         renderToday();
         renderStats();
         renderDayList();
@@ -749,13 +804,19 @@
     const txt = document.getElementById("templateText").textContent;
     const btn = document.getElementById("btnCopyTemplate");
     try {
-      navigator.clipboard.writeText(txt).then(() => {
-        btn.textContent = t.copied;
-        setTimeout(() => {
-          btn.textContent = t.copyBtn;
-        }, 1500);
-      });
-    } catch (e) {}
+      navigator.clipboard
+        .writeText(txt)
+        .then(() => {
+          btn.textContent = t.copied;
+          showAlert(t.copySuccess, "success");
+          setTimeout(() => {
+            btn.textContent = t.copyBtn;
+          }, 1500);
+        })
+        .catch(() => showAlert(t.copyError, "error"));
+    } catch (e) {
+      showAlert(t.copyError, "error");
+    }
   });
 
   document.getElementById("btnPlus").addEventListener("click", () => {
@@ -763,12 +824,14 @@
     save(state);
     renderGoal();
     renderStats();
+    showAlert(dayMeta[currentLang].clientAdded, "success");
   });
   document.getElementById("btnMinus").addEventListener("click", () => {
     state.clients = Math.max(0, (state.clients || 0) - 1);
     save(state);
     renderGoal();
     renderStats();
+    showAlert(dayMeta[currentLang].clientRemoved, "warning");
   });
 
   function wireResetButton(id, defaultTextFn) {
@@ -781,6 +844,7 @@
       save(state);
       pending = false;
       if (timeoutId) clearTimeout(timeoutId);
+      showAlert(dayMeta[currentLang].resetSuccess, "warning");
       renderAll();
     }
 
@@ -815,12 +879,14 @@
     (t) => t.resetBtn,
   );
 
-  document
-    .getElementById("btnEn")
-    .addEventListener("click", () => applyLang("en"));
-  document
-    .getElementById("btnAr")
-    .addEventListener("click", () => applyLang("ar"));
+  document.getElementById("btnEn").addEventListener("click", () => {
+    applyLang("en");
+    showAlert(dayMeta.en.languageChanged, "info");
+  });
+  document.getElementById("btnAr").addEventListener("click", () => {
+    applyLang("ar");
+    showAlert(dayMeta.ar.languageChanged, "info");
+  });
 
   applyLang(loadLang());
 })();
